@@ -1,4 +1,4 @@
-# Countdown__Timer
+# Countdown Timer
 <p>
     This very simple app provides a clean layout displaying, event title, current day and date, current time and countdown time.
 </p>
