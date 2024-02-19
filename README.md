@@ -26,6 +26,3 @@
 <p align="center">
   <img src="https://github.com/WADEAWHILE/wadeawhile.github.io/blob/master/assets/images/browser__apps/countdown__timer/countdown__timer__04.jpg" width="100%" alt="Countdown Timer Image 04">
 </p>
-<p align="center">
-  <img src="https://github.com/WADEAWHILE/wadeawhile.github.io/blob/master/assets/images/browser__apps/countdown__timer/countdown__timer__05.jpg" width="100%" alt="Countdown Timer Image 05">
-</p>
