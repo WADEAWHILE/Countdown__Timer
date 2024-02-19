@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            background-color: rgb(48, 47, 47);
+            text-align: center;
+        }
+
+        #eventTitlePlaceholder {
+            display: none;
+            font-size: 4rem;
+            color: rgb(200,200,200);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+
+        #eventTitle {
+            width: 25rem;
+            font-size: 2rem;
+            color: rgb(27, 27, 27);
+            background-color: rgb(200, 200, 200);
+            border: 2px solid rgb(14, 230, 194);
+            border-radius: 6px;
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+
+        #date {
+            font-size: 1rem;
+            color: rgb(2, 164, 211);
+            filter: drop-shadow(0px 1px 0px rgb(63, 213, 255));
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        #time {
+            font-size: 4rem;
+            color: rgb(0, 204, 153);
+            filter: drop-shadow(0px 1px 0px rgb(14, 230, 194));
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        #countdown {
+            font-size: 10rem;
+            color: rgb(200,200,200);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+
+        #startTimer {
+            font-size: 3rem;
+            border-radius: 12px;
+            color: rgb(14, 230, 194);
+            background-color: rgba(0,0,0,0);
+            border: 2px solid rgb(14, 230, 194);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+
+        #startTimer:hover {
+            color: rgb(48, 47, 47);
+            background-color: rgb(14, 230, 194);
+            border: 2px solid rgb(14, 230, 194);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+            cursor: pointer;
+        }
+
+        #pauseResumeTimer {
+            margin-top: 2rem;
+            font-size: 2rem;
+            border-radius: 10px;
+            color: rgb(14, 126, 230);
+            background-color: rgba(0,0,0,0);
+            border: 2px solid rgb(14, 126, 230);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+
+        #pauseResumeTimer:hover {
+            color: rgb(48, 47, 47);
+            background-color: rgb(14, 126, 230);
+            border: 2px solid rgb(14, 126, 230);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+            cursor: pointer;
+        }
+
+        .settingsCog {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            color: rgb(200, 200, 200);
+            filter: drop-shadow(0px 1px 0px rgb(27, 27, 27));
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        #showSettings, #hideSettings {
+            font-size: 1rem;
+            border-radius: 6px;
+            color: rgb(14, 230, 194);
+            background-color: rgba(0,0,0,0);
+            border: 2px solid rgb(14, 230, 194);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+        }
+
+        #showSettings:hover, #hideSettings:hover {
+            color: rgb(48, 47, 47);
+            background-color: rgb(14, 230, 194);
+            border: 2px solid rgb(14, 230, 194);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+            cursor: pointer;
+        }
+
+        #startTimer:hover {
+            color: rgb(48, 47, 47);
+            background-color: rgb(14, 230, 194);
+            border: 2px solid rgb(14, 230, 194);
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+            cursor: pointer;
+        }
+
+        .settingsCog:hover {
+            cursor: pointer;
+        }
+
+        #hideSettings, #settings {
+            display: none;
+        }
+
+        #settings ul li {
+            text-align: left;
+            list-style: none;
+            margin-right: 2rem;
+            margin-top: 1rem;
+        }
+
+        #timerMinutes, #loopPauseInSeconds {
+            width: 5rem;
+            font-size: 2rem;
+            color: rgb(27, 27, 27);
+            background-color: rgb(200, 200, 200);
+            border: 2px solid rgb(14, 230, 194);
+            border-radius: 6px;
+            filter: drop-shadow(0px 1px 1px rgb(27, 27, 27));
+        }
+    </style>
+</head>
+<body onload="updateTime()">
+    <h1 id="eventTitlePlaceholder"></h1>
+    <div class="clock">
+        <h5 id="date"></h5>
+        <h1 id="time"></h1>
+    </div>
+    <div class="timer">
+        <h1 id="countdown">00:00</h1>
+        <button id="startTimer" type="button" title="startTimer" onclick="timer()">Start Timer</button>
+        <div>
+            <button id="pauseResumeTimer" type="button" title="pauseResumeTimer">Pause</button>
+        </div>
+    </div>
+    <div class="settingsCog">
+        <button type="button" id="showSettings" onclick="showSettings()">Show Settings</button>
+        <button type="button" id="hideSettings" onclick="hideSettings()">Hide Settings</button>
+        <audio id="endAudio" src="alarm.mp3"></audio>
+        <div id="settings">
+            <ul>
+                <li>
+                    <label for="eventTitle">Event Title: </label>
+                    <input type="text" title="eventTitle" id="eventTitle" value="">
+                </li>
+                <li>
+                    <label for="timerMinutes">Timer Minutes: </label>
+                    <input type="number" title="timerMinutes" id="timerMinutes" value="1">
+                </li>
+                <li>
+                    <label for="loopCheckbox">Loop Timer: </label>
+                    <input type="checkbox" id="loopCheckbox">
+                </li>
+                <li>
+                    <label for="loopPauseInSeconds">Loop Pause in Seconds: </label>
+                    <input type="number" title="loopPauseInSeconds" id="loopPauseInSeconds" value="0">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        /* Date and Time */
+        const WEEK = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+        function updateTime() {
+            var now = new Date();
+
+            document.getElementById('time').innerHTML =
+                    zeroPadding(now.getHours(), 2) + ":" +
+                    zeroPadding(now.getMinutes(), 2) + ":" +
+                    zeroPadding(now.getSeconds(), 2);
+
+            document.getElementById('date').innerHTML = 
+                    WEEK[now.getDay()] + " " + 
+                    zeroPadding(now.getDate(), 2) + "-" +
+                    zeroPadding(now.getMonth() + 1, 2) + "-" +
+                    now.getFullYear();
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        function zeroPadding(num, digit) {
+            return String(num).padStart(digit, '0');
+        }
+        /* ********** */
+
+        let timeinterval; // Define the time interval variable globally
+        let deadline; // Define the deadline variable globally
+
+        /* COUNTDOWN TIMER */
+        function timer() {
+            var time_in_minutes = document.getElementById("timerMinutes").value;
+            var loop_pause_in_seconds = document.getElementById("loopPauseInSeconds").value;
+            var current_time = Date.parse(new Date());
+
+
+            function time_remaining(endtime){
+                var t = Date.parse(endtime) - Date.parse(new Date());
+                var seconds = zeroPadding(Math.floor( (t/1000) % 60 ), 2);
+                var minutes = zeroPadding(Math.floor( (t/1000/60) % 60 ), 2);
+                var hours = zeroPadding(Math.floor( (t/(1000*60*60)) % 24 ), 2);
+                var days = Math.floor( t/(1000*60*60*24) );
+                return {'total':t, 'days':days, 'hours':hours, 'minutes':minutes, 'seconds':seconds};
+            }
+
+            function run_clock(endtime){
+                var countdown = document.getElementById('countdown');
+                function update_clock(){
+                    var t = time_remaining(endtime);
+                    countdown.innerHTML = t.minutes + ":" + t.seconds;
+                    if(t.total<=0){ 
+                        clearInterval(timeinterval); 
+
+                        // Check the state of the loop checkbox
+                        const loopCheckbox = document.getElementById('loopCheckbox');
+                        if (loopCheckbox.checked) {
+                            // Add a pause before resetting the timer
+                            setTimeout(() => {
+                                timer();
+                            }, (loop_pause_in_seconds * 1000)); // 5000 milliseconds = 5 seconds
+                        }
+
+                        // Play the end audio
+                        const endAudio = document.getElementById('endAudio');
+                        endAudio.play();
+                    }
+                }
+                update_clock(); // run function once at first to avoid delay
+                timeinterval = setInterval(update_clock,1000);
+            }
+
+            // Clear the previous interval if it exists
+            if (timeinterval) {
+                clearInterval(timeinterval);
+            }
+
+            // Set a new deadline
+            deadline = new Date(Date.parse(new Date()) + time_in_minutes * 60 * 1000);
+
+            run_clock(deadline);
+
+            var paused = false; // is the clock paused?
+            var time_left; // time left on the clock when paused
+
+            function pause_clock(){
+                if(!paused){
+                    paused = true;
+                    clearInterval(timeinterval); // stop the clock
+                    time_left = time_remaining(deadline).total; // preserve remaining time
+                }
+            }
+
+            function resume_clock(){
+                if(paused){
+                    paused = false;
+
+                    // update the deadline to preserve the amount of time remaining
+                    deadline = new Date(Date.parse(new Date()) + time_left);
+
+                    // start the clock
+                    run_clock(deadline);
+                }
+            }
+
+            document.getElementById('pauseResumeTimer').addEventListener("click", pauseResumeTimer);
+            
+            var pauseToggle = 1;
+
+            function pauseResumeTimer() {
+                if (pauseToggle == 1) {
+                    document.getElementById('pauseResumeTimer').innerHTML = "Resume";
+                    pause_clock();
+                    pauseToggle = 0;
+                }else{
+                    document.getElementById('pauseResumeTimer').innerHTML = "Pause";
+                    resume_clock();
+                    pauseToggle = 1;
+                }
+            }
+        }
+        /* ******* */
+
+        /* Show/Hide Settings */
+        function showSettings() {
+            document.getElementById("settings").style.display = "block";
+            document.getElementById("showSettings").style.display = "none";
+            document.getElementById("hideSettings").style.display = "block";
+            document.getElementById("eventTitlePlaceholder").style.display = "none";
+        }
+
+        function hideSettings() {
+            document.getElementById("settings").style.display = "none";
+            document.getElementById("showSettings").style.display = "block";
+            document.getElementById("hideSettings").style.display = "none";
+            document.getElementById('eventTitlePlaceholder').innerHTML = document.getElementById('eventTitle').value;
+            document.getElementById("eventTitlePlaceholder").style.display = "block";
+        }
+
+        /* ******* */
+    </script>
+</body>
+</html>
